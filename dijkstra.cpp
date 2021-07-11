@@ -21,7 +21,7 @@ using namespace std;
 int find_min_node(unordered_map<int, float> costs, vector<int> visited)
 {
 	int minimum_node = -1;
-	int minimum_cost = INFINITY;
+	float minimum_cost = INFINITY;
 	for (const auto x: costs)
 	{
 		if (find(visited.begin(), visited.end(), x.first) == visited.end() && costs[x.first] < minimum_cost)
@@ -33,57 +33,16 @@ int find_min_node(unordered_map<int, float> costs, vector<int> visited)
 	return minimum_node;
 }
 
-int main()
+float dijkstra(	std::unordered_map<int, unordered_map<int, float>> &graph,
+	std::unordered_map<int, float> &costs,
+	int start_node,
+	int end_node)
 {
 
-	unordered_map<int, unordered_map<int, float>> graph;
-	int num_nodes, num_edges;
-	cin >> num_nodes >> num_edges;
-	for (int x = 0; x < num_edges; x++)
-	{
-		cout << x << endl;
-		int start_node, end_node;
-		float cost;
-		cin >> start_node >> end_node >> cost;
-		if (graph.find(start_node) == graph.end())
-		{
-			graph[start_node] = unordered_map<int, float>
-			{ 	{ 		end_node, cost
-				}
-			};
-		}
-		else
-		{
-			graph[start_node].insert({ end_node, cost });
-		}
-		// to avoid missing leaf nodes
-		if (graph.find(end_node) == graph.end())
-		{
-			graph[end_node] = {};
-		}
-	}
-
-	vector<int> list_nodes;
-	for (const auto x: graph)
-	{
-		list_nodes.push_back(x.first);
-	}
-	int start_node = 1;
-	int end_node = 4;
-	unordered_map<int, float> costs;
-	for (const auto a: list_nodes)
-	{
-		if (a == start_node)
-		{
-			costs[a] = 0;
-		}
-		else
-		{
-			costs[a] = INFINITY;
-		}
-	}
+	costs[start_node] = 0;
 	unordered_map<int, int> parents;
 	parents[start_node] = -1;
+
 	vector<int> visited {};
 	while (true)
 	{
@@ -101,28 +60,51 @@ int main()
 		}
 	}
 
+	return costs[end_node];
+
+}
+
+int main()
+{
+
+	unordered_map<int, unordered_map<int, float>> graph;
+	unordered_map<int, float> costs;
+	int num_nodes, num_edges;
+	cin >> num_nodes >> num_edges;
+	for (int x = 0; x < num_edges; x++)
+	{
+		cout << x << endl;
+		int start_node, end_node;
+		float cost;
+		cin >> start_node >> end_node >> cost;
+		if (graph.find(start_node) == graph.end())
+		{
+			graph[start_node] = unordered_map<int, float>
+			{ 	{ 		end_node, cost
+				}
+			};
+			costs[end_node] = INFINITY;
+		}
+		else
+		{
+			graph[start_node].insert({ end_node, cost });
+		}
+		// to avoid missing leaf nodes
+		if (graph.find(end_node) == graph.end())
+		{
+			graph[end_node] = {};
+			costs[end_node] = INFINITY;
+		}
+	}
+
+	int start_node = 1;
+	int end_node = 4;
+	float min_cost = dijkstra(graph, costs, start_node, end_node);
+
 	// print the cost
-	cout << "The min cost from " << start_node << " to " << end_node << " is " << costs[
-		end_node] << "." << "\n";
+	cout << "The min cost from " << start_node << " to " << end_node << " is " << min_cost << "." << "\n";
 
-	// print the path
-	stack<int> st;
-	int node = end_node;
-	while (node != start_node)
-	{
-		st.push(node);
-		node = parents[node];
-	}
-	st.push(node);
-
-	cout << "The min-cost path is: " << endl;
-	while (!st.empty())
-	{
-		int p_node = st.top();
-		st.pop();
-		cout << p_node << "-->";
-	}
-	cout << endl;
+	for (auto x: costs) cout << x.first << ": " << x.second << endl;
 
 	return 0;
 }
