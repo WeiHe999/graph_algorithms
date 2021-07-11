@@ -1,4 +1,3 @@
-
 /*******************************************
 # user input:
 # 4 nodes 5 edges
@@ -12,6 +11,7 @@
 ********************************************/
 #include <iostream>
 #include <vector>
+#include <stack>
 #include <algorithm>
 #include <unordered_map>
 #include <sstream>
@@ -32,7 +32,6 @@ int find_min_node(unordered_map<int, int> costs, vector<int> visited)
 	}
 	return minimum_node;
 }
-
 
 int main()
 {
@@ -62,7 +61,6 @@ int main()
 			graph[end_node] = {};
 		}
 	}
-	
 
 	vector<int> list_nodes;
 	for (const auto x: graph)
@@ -102,24 +100,28 @@ int main()
 		}
 	}
 
-    // print the cost
+	// print the cost
 	cout << "The min cost from " << start_node << " to " << end_node << " is " << costs[
 		end_node] << "." << "\n";
-		
+
 	// print the path
-	vector<int> path;
+	stack<int> st;
 	int node = end_node;
-	while (node!=start_node)
+	while (node != start_node)
 	{
-	    path.push_back(node);
-	    node = parents[node];
+		st.push(node);
+		node = parents[node];
 	}
-	path.push_back(node);
-	reverse(path.begin(), path.end());
-	
+	st.push(node);
+
 	cout << "The min-cost path is: " << endl;
-	for(auto x: path) cout << x << "-->";
+	while (!st.empty())
+	{
+		int p_node = st.top();
+		st.pop();
+		cout << p_node << "-->";
+	}
 	cout << endl;
-	
+
 	return 0;
 }
