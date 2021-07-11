@@ -5,7 +5,7 @@
 1 2 3
 1 3 6
 2 3 4
-2 4 4
+2 4 4.5
 3 4 8
 
 ********************************************/
@@ -15,13 +15,13 @@
 #include <algorithm>
 #include <unordered_map>
 #include <sstream>
-#include <climits>
+#include <cmath>
 using namespace std;
 
-int find_min_node(unordered_map<int, int> costs, vector<int> visited)
+int find_min_node(unordered_map<int, float> costs, vector<int> visited)
 {
 	int minimum_node = -1;
-	int minimum_cost = INT_MAX;
+	int minimum_cost = INFINITY;
 	for (const auto x: costs)
 	{
 		if (find(visited.begin(), visited.end(), x.first) == visited.end() && costs[x.first] < minimum_cost)
@@ -36,17 +36,18 @@ int find_min_node(unordered_map<int, int> costs, vector<int> visited)
 int main()
 {
 
-	unordered_map<int, unordered_map<int, int>> graph;
+	unordered_map<int, unordered_map<int, float>> graph;
 	int num_nodes, num_edges;
 	cin >> num_nodes >> num_edges;
 	for (int x = 0; x < num_edges; x++)
 	{
 		cout << x << endl;
-		int start_node, end_node, cost;
+		int start_node, end_node;
+		float cost;
 		cin >> start_node >> end_node >> cost;
 		if (graph.find(start_node) == graph.end())
 		{
-			graph[start_node] = unordered_map<int, int>
+			graph[start_node] = unordered_map<int, float>
 			{ 	{ 		end_node, cost
 				}
 			};
@@ -69,7 +70,7 @@ int main()
 	}
 	int start_node = 1;
 	int end_node = 4;
-	unordered_map<int, int> costs;
+	unordered_map<int, float> costs;
 	for (const auto a: list_nodes)
 	{
 		if (a == start_node)
@@ -78,7 +79,7 @@ int main()
 		}
 		else
 		{
-			costs[a] = INT_MAX;
+			costs[a] = INFINITY;
 		}
 	}
 	unordered_map<int, int> parents;
