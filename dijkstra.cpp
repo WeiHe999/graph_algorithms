@@ -11,10 +11,8 @@
 ********************************************/
 #include <iostream>
 #include <vector>
-#include <stack>
 #include <algorithm>
 #include <unordered_map>
-#include <sstream>
 #include <cmath>
 using namespace std;
 
@@ -88,7 +86,6 @@ int main()
 	cin >> num_nodes >> num_edges;
 	for (int x = 0; x < num_edges; x++)
 	{
-		cout << x << endl;
 		int start_node, end_node;
 		float cost;
 		cin >> start_node >> end_node >> cost;
