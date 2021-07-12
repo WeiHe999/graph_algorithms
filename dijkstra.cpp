@@ -33,14 +33,14 @@ int find_min_node(unordered_map<int, float> costs, vector<int> visited)
 	return minimum_node;
 }
 
-float dijkstra(	std::unordered_map<int, unordered_map<int, float>> &graph,
-	std::unordered_map<int, float> &costs,
+float dijkstra(	unordered_map<int, unordered_map<int, float>> &graph,
+	unordered_map<int, float> &costs,
+	unordered_map<int, int> &parents,
 	int start_node,
 	int end_node)
 {
 
 	costs[start_node] = 0;
-	unordered_map<int, int> parents;
 	parents[start_node] = -1;
 
 	vector<int> visited {};
@@ -64,9 +64,24 @@ float dijkstra(	std::unordered_map<int, unordered_map<int, float>> &graph,
 
 }
 
+vector<int> find_min_cost_path(	unordered_map<int, int> &parents,
+	int start_node,
+	int end_node)
+{
+	vector<int> path;
+	int node = end_node;
+	while (node != start_node)
+	{
+		path.push_back(node);
+		node = parents[node];
+	}
+	path.push_back(node);
+	reverse(path.begin(), path.end());
+	return path;
+}
+
 int main()
 {
-
 	unordered_map<int, unordered_map<int, float>> graph;
 	unordered_map<int, float> costs;
 	int num_nodes, num_edges;
@@ -99,12 +114,18 @@ int main()
 
 	int start_node = 1;
 	int end_node = 4;
-	float min_cost = dijkstra(graph, costs, start_node, end_node);
+	unordered_map<int, int> parents;
+	parents[start_node] = -1;
+	float min_cost = dijkstra(graph, costs, parents, start_node, end_node);
 
 	// print the cost
 	cout << "The min cost from " << start_node << " to " << end_node << " is " << min_cost << "." << "\n";
 
-	for (auto x: costs) cout << x.first << ": " << x.second << endl;
+	//print the min-cost path
+	vector<int> path = find_min_cost_path(parents, start_node, end_node);
+	cout << "The min-cost path:" << endl;
+	for (auto x: path) cout << x << "-->";
+	cout << endl;
 
 	return 0;
 }
