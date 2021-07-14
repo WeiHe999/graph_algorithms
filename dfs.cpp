@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <algorithm>
 using namespace std;
+
 void dfs(unordered_map <int, vector<int> > graph, int start_node, vector <int> &visited)
 {
     if (find(visited.begin(), visited.end(), start_node) == visited.end())
