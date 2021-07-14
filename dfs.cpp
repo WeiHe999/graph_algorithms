@@ -3,59 +3,49 @@
 #include <unordered_map>
 #include <algorithm>
 using namespace std;
-
-void dfs(int node, unordered_map<int, vector<int> > graph, vector<int> &visited)
+void dfs(unordered_map <int, vector<int> > graph, int start_node, vector <int> &visited)
 {
-    if (find(visited.begin(), visited.end(), node)==visited.end())
+    if (find(visited.begin(), visited.end(), start_node) == visited.end())
     {
-        visited.push_back(node);
-        for (auto x: graph[node]) dfs(x, graph, visited);
+        visited.emplace_back(start_node);
+        for (auto x : graph[start_node])
+            {
+                dfs(graph, x, visited);
+            }
     }
-    
 }
-
 
 int main()
 {
     int num_nodes, num_edges;
-    int start, end;
-    unordered_map<int, vector<int> > graph;
-    
-    //initialize the graph
     cin >> num_nodes >> num_edges;
-    for (int i=0; i<num_edges; i++)
+    unordered_map <int, vector<int> > graph;
+    for (int x = 0; x < num_edges; x++)
     {
+        int start, end;
         cin >> start >> end;
-        if (graph.find(start)!=graph.end())
+        graph[start].emplace_back(end);
+        if (graph.find(end) == graph.end())
         {
-            graph[start].push_back(end);
+            graph[end] = vector <int> {};
         }
-        else {
-            graph[start] = vector<int> {end};
-        }
-        // to avoid missing leaf nodes
-        if (graph.find(end)==graph.end())
-        {
-            graph[end] = vector<int> {};
-        }
-        
     }
+    
     //print the graph
-    for (auto x: graph)
+    for (auto a : graph)
     {
-        cout << "key=" << x.first << endl;
-        for (auto y: x.second)
+        cout << a.first << ": ";
+        for (auto b : graph[a.first])
         {
-            cout << y << ", ";
+            cout << b << " ";
         }
         cout << endl;
     }
     
-    //dfs
-    vector<int> visited = {};
-    dfs(3, graph, visited);
-    cout << "DFS: " << endl;
-    for (auto x: visited) cout << x << ", ";
-    cout << endl;
-
+    vector <int> visited;
+    dfs(graph, 1, visited);
+    for (auto c : visited)
+    {
+        cout << c << " ";
+    }
 }
