@@ -40,6 +40,7 @@ int bfs(vector <vector <int > > graph, pair <int, int> start_node, pair <int, in
         for (auto a : vec_loop)
         {
             if (a.first>=cols || a.second>=rows || a.first<0 || a.second<0) continue;
+	    // if it is a wall
             if (graph[a.first][a.second]==1) continue;
             
             if (find(visited.begin(), visited.end(), a) == visited.end())
@@ -80,7 +81,7 @@ int main() {
         vector<int> tmp;
         for (int a = 0; a < line.length(); a++)
         {
-            if (line[a] == '#') tmp.push_back(1);
+            if (line[a] == '#') tmp.push_back(1);//wall is 1
             else if (line[a] == 'S') 
             {
                 start_node = {x, a};
