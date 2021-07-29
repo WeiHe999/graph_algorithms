@@ -106,8 +106,7 @@ int main() {
 	    for(int j=0; j<cols; j++) cout << graph[i][j] << " ";
 	    cout << endl;
 	}
-  
-	int steps = bfs(graph, start_node, end_node, rows, cols);
-	if (steps==-1) cout << "end node is not reachable from the start node." << endl;
-	else cout << "The minimal number of steps from start node to end node is " << steps << endl;
+  int steps = bfs(graph, start_node, end_node, rows, cols);
+  if (steps==-1) cout << "end node is not reachable from the start node." << endl;
+  else cout << "The minimal number of steps from start node to end node is " << steps << endl;
 }
