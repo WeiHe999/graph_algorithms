@@ -13,6 +13,7 @@ input
 #include <vector>
 #include <algorithm>
 using namespace std;
+
 void dfs(vector <vector <int> > graph, pair <int, int> start_node, vector <pair <int, int> > &visited, int rows, int cols)
 {
     if (find(visited.begin(), visited.end(), start_node) == visited.end())
