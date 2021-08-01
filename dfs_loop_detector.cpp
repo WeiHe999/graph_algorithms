@@ -7,11 +7,15 @@ using namespace std;
 // check if child is the same to one of its ancestors
 bool check_ancestor(int child, int parent, unordered_map <int, int> &parents)
 {
+    if (child==parent) return true; //self loop
     int current = parent;
+    int steps = 0;
+    int max_steps = 1; // 1 for undirected graph, 0 for directed graph
     while(parents[current]!=-1)
     {
         current = parents[current];
-        if (current==child) return true;
+        steps++; 
+        if (current==child && steps>max_steps) return true;
     }
     return false;
 }
@@ -41,7 +45,7 @@ unordered_map <int, int> &parents, vector <int> &visited)
 }
 
 int main() {
-    unordered_map <int, vector <int> > graph = {{1, {2, 3}}, {2, {3, 4}}, {3, {4}}, {4, {2}}};
+    unordered_map <int, vector <int> > graph = {{1, {2, 3}}, {2, {3}}, {3, {4}}, {4, {2}}};
     int start_node = 1;
     vector<int> visited;
     unordered_map <int, int> parents;
