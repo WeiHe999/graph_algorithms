@@ -1,59 +1,93 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+#include <sstream>
 #include <algorithm>
+#include <stdio.h>
+#include <unordered_map>
 using namespace std;
 
-// check if child is the same to one of its ancestors
-bool check_ancestor(int child, int parent, unordered_map <int, int> &parents)
+template < typename T > void
+print (T t)
 {
-    if (child==parent) return true; //self loop
-    int current = parent;
-    int steps = 0;
-    int max_steps = 1; // 1 for undirected graph, 0 for directed graph
-    while(parents[current]!=-1)
+ for (const auto & e:t) cout << e << " ";
+  cout << endl;
+}
+
+vector < string > split (string str1)
+{
+  vector < string >vv;
+  string word;
+  istringstream ss (str1);
+  while (getline (ss, word, ' '))
     {
+      vv.push_back (word);
+    }
+  return vv;
+}
+
+bool check_ancestor(int a, int start_node, unordered_map <int, int> parents)
+{
+    int current = start_node;
+    while (current != -1)
+    {
+        if (a == current) return true;
         current = parents[current];
-        steps++; 
-        if (current==child && steps>max_steps) return true;
     }
     return false;
 }
 
-
-bool dfs_loop(unordered_map <int, vector<int> > graph, int start_node, int parent, 
-unordered_map <int, int> &parents, vector <int> &visited)
+bool dfs_check_loop(int start_node, int parent, unordered_map <int, int> &parents, vector <int> &visited, unordered_map <int, vector <int> > graph)
 {
     if (find(visited.begin(), visited.end(), start_node) == visited.end())
     {
         visited.emplace_back(start_node);
         parents[start_node] = parent;
+        vector <int> list_children = graph[start_node];
         
-        for (auto x : graph[start_node])
+        for (auto a : list_children)
+        {
+            //detect if there is a loop for the subnet rooted at a
+            if (find(visited.begin(), visited.end(), a) == visited.end())
             {
-                if (find(visited.begin(), visited.end(), x) == visited.end()) 
-                {
-                    if (dfs_loop(graph, x, start_node, parents, visited)) return true;
-                }
-                else 
-                {
-                    if(check_ancestor(x, start_node, parents)) return true;
-                }
+                bool ret_value = dfs_check_loop(a, start_node, parents, visited, graph);
+                if (ret_value == true) return true;
             }
+            else
+            {
+                //if a has been visited, check if a is an ancestor of start_node
+                if (check_ancestor(a, start_node, parents) == true) return true;
+                
+            }
+        }
     }
     return false;
 }
 
-int main() {
-    unordered_map <int, vector <int> > graph = {{1, {2, 3}}, {2, {3}}, {3, {4}}, {4, {2}}};
-    int start_node = 1;
-    vector<int> visited;
+int main()
+{
+    unordered_map <int, vector <int> > graph = {{1, {2}}, {2, {3, 4}}, {3, {}}, {4, {}}, {5, {2, 6}}, {6, {7}}, {7, {}}};
+    vector <int> visited;
+    vector <int> g_visited;
     unordered_map <int, int> parents;
-    bool ret = dfs_loop(graph, start_node, -1, parents, visited);
-    for (auto x: visited)
+    int start_node;
+    int parent;
+    bool b;
+    for (auto s : graph)
     {
-        cout << x << ", ";
+        start_node = s.first;
+        parent = -1;
+        if (find(g_visited.begin(), g_visited.end(), start_node) == g_visited.end()) 
+        {
+            visited={};
+            parents = {};
+            if (dfs_check_loop(start_node, parent, parents, visited, graph) == true)
+            {
+                cout << "There is a loop." << endl;
+                return 0;
+            }
+            
+            g_visited.insert(g_visited.end(), visited.begin(), visited.end());
+        }
     }
-    cout << endl;
-    cout << ret << endl;
+    cout << "There is no loop." << endl;
 }
