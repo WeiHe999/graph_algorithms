@@ -1,29 +1,9 @@
 #include <iostream>
 #include <vector>
-#include <sstream>
 #include <algorithm>
-#include <stdio.h>
 #include <unordered_map>
 using namespace std;
 
-template < typename T > void
-print (T t)
-{
- for (const auto & e:t) cout << e << " ";
-  cout << endl;
-}
-
-vector < string > split (string str1)
-{
-  vector < string >vv;
-  string word;
-  istringstream ss (str1);
-  while (getline (ss, word, ' '))
-    {
-      vv.push_back (word);
-    }
-  return vv;
-}
 
 bool check_ancestor(int a, int start_node, unordered_map <int, int> parents)
 {
