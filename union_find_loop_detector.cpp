@@ -54,7 +54,6 @@ int main() {
         map_comp_sizes[count] = 1;
         count++;
     }
-    // step 3: loop through all links to detect loop
     for (auto a : graph)
     {
         for (auto b : a.second)
