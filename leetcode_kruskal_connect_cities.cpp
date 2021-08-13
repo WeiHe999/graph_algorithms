@@ -1,4 +1,7 @@
 /*
+input format:
+line 1 is the number of cities, 
+from line 2 to the end is the connection from start city to the end city with a cost
 input 1:
 5
 1 2 2
@@ -14,6 +17,10 @@ input 2:
 1 3 5
 4 5 6
 0 0 0
+
+output format:
+if there is always connections between any two cities, output the minimum total cost
+else output the number of components
 */
 
 
