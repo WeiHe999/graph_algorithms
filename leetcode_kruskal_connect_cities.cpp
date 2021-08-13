@@ -1,3 +1,22 @@
+/*
+input 1:
+5
+1 2 2
+1 3 5
+2 4 4
+3 5 8
+4 5 6
+0 0 0
+
+input 2:
+5
+1 2 2
+1 3 5
+4 5 6
+0 0 0
+*/
+
+
 #include <iostream>
 #include <vector>
 #include <unordered_map>
