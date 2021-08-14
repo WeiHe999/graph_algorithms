@@ -10,14 +10,12 @@ input 1:
 3 5 8
 4 5 6
 0 0 0
-
 input 2:
 5
 1 2 2
 1 3 5
 4 5 6
 0 0 0
-
 output format:
 if there is always connections between any two cities, output the minimum total cost
 else output the number of components
@@ -85,17 +83,20 @@ int main() {
 
     int num_cities;
     cin >> num_cities;
+    vector<int> nodes;
+    nodes.assign(num_cities, 0);
     unordered_map <int, unordered_map <int, int> > graph;
     int a, b, c;
     cin >> a >> b >> c;
     while (a != 0 || b != 0 || c != 0)
     {
         graph[a][b] = c;
+        nodes[a] = 1;
         cin >> a >> b >> c;
     }
     for (int x = 1; x <= num_cities; x++)
     {
-        if (graph.find(x) == graph.end()) graph[x] = {};
+        if (nodes[x]==0) graph[x] = {};
     }
     unordered_map <int, int> map_mapping;
     vector <int> vec_parents;
@@ -122,6 +123,6 @@ int main() {
         if (d.second > m) m = d.second;
         if (d.second > 0) num_comp++;
     }
-    if (m == num_cities) cout << "It is poosible to connect any of two cities, and the total cost is " << tot_cost << endl;
-    else cout << "It is impoosible to connect any of two cities, and the number of components is " << num_comp << endl;
+    if (m == num_cities) cout << "It is possible to connect any of two cities, and the total cost is " << tot_cost << endl;
+    else cout << "It is impossible to connect any of two cities, and the number of components is " << num_comp << endl;
 }
