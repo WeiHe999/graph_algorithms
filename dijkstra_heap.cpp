@@ -5,24 +5,22 @@
 #include <cmath>
 using namespace std;
 
-
-int find_min_node_heap(vector<pair<float, int> > &v_heap)
+int find_min_node(vector <pair <float, int> > &vec_h)
 {
-    if (v_heap.size()==0) return -1;
-    make_heap(v_heap.begin(), v_heap.end(), [](pair <int, int> a, pair <int, int> b) {return a > b;});
-    pop_heap(v_heap.begin(), v_heap.end(), [](pair <int, int> a, pair <int, int> b) {return a > b;});
-    int min_node = v_heap.back().second;
-    v_heap.pop_back();
+    make_heap(vec_h.begin(), vec_h.end(), [](pair <float, int> a, pair <float, int> b) {return a > b;});
+    pop_heap(vec_h.begin(), vec_h.end(), [](pair <float, int> a, pair <float, int> b) {return a > b;});
+    int min_node = vec_h.back().second;
+    vec_h.pop_back();
     return min_node;
 }
 
-float dijkstra(unordered_map <int, unordered_map<int, float> > graph, int start_node, int end_node, 
-unordered_map <int, int> &parents, unordered_map <int, float> &costs, vector<pair<float, int> > &v_heap)
+float dijkstra(unordered_map <int, unordered_map<int, float> > graph, int start_node, int end_node, unordered_map <int, int> &parents, 
+               unordered_map <int, float> &costs, vector <pair <float, int> > &vec_h)
 {
     vector <int> visited;
     while (true)
     {
-        int min_node = find_min_node_heap(v_heap);
+        int min_node = find_min_node(vec_h);
         if (min_node == -1) break;
         visited.emplace_back(min_node);
         for (const auto a : graph[min_node])
@@ -31,7 +29,7 @@ unordered_map <int, int> &parents, unordered_map <int, float> &costs, vector<pai
             if (c < costs[a.first])
             {
                 costs[a.first] = c;
-                v_heap.push_back({c, a.first});
+                vec_h.push_back({c, a.first});
                 parents[a.first] = min_node;
             }
         }
@@ -50,18 +48,14 @@ int main()
     int start_node = 1;
     int end_node = 4;
     unordered_map <int, float> costs;
-    vector<pair<float, int> > v_heap; //{cost, node}
+    vector <pair <float, int> > vec_h;
     for (const auto a : graph)
     {
-        if (a.first == start_node) 
-        {
-            costs[a.first] = 0;
-            v_heap.push_back({0, a.first});
-        }
-        else costs[a.first] = INFINITY;
+        if (a.first == start_node) {costs[a.first] = 0; vec_h.push_back({0, a.first});}
+        else {costs[a.first] = INFINITY; vec_h.push_back({INFINITY, a.first});}
     }
     unordered_map <int, int> parents = {{start_node, -1}};
-    float ans = dijkstra(graph, start_node, end_node, parents, costs, v_heap);
+    float ans = dijkstra(graph, start_node, end_node, parents, costs, vec_h);
     cout << ans << endl;
     int current = end_node;
     vector <int> vec1;
@@ -75,5 +69,4 @@ int main()
         cout << a << " ";
     }
     cout << endl;
-    
 }
