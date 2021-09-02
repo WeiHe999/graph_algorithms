@@ -61,6 +61,6 @@ int main()
         else {costs[a.first][1] = INT_MAX; vec_h.push_back({INT_MAX, a.first, 1});}
     }
     unordered_map <int, int> parents = {{start_node, -1}};
-    float ans = dijkstra(graph, start_node, end_node, parents, costs, vec_h, max_steps);
-    cout << ans << endl;
+    int min_flight = dijkstra(graph, start_node, end_node, parents, costs, vec_h, max_steps);
+    cout << min_flight << endl;
 }
