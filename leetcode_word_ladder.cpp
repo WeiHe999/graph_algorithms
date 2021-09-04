@@ -1,12 +1,8 @@
-/*
-https://www.youtube.com/watch?v=h9iTnkgv05E&list=PLot-Xpze53ldBT_7QA8NVot219jFNr_GI&index=6
-*/
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <unordered_map>
+#include <map>
 #include <vector>
-#include <queue>
 using namespace std;
 
 int compare(string a, string b)
@@ -19,53 +15,73 @@ int compare(string a, string b)
     return 0;
 }
 
-void bfs(vector <string> vec1, string start_word, string end_word, int &s, vector <string> &visited)
+vector <string > find_neighbors(string current_node, vector <string > list_words)
 {
-    if (start_word == end_word) return;
-    string current_node;
-    for (string x : vec1)
-    {
-        if (find(visited.begin(), visited.end(), x) == visited.end() && compare(start_word, x) == 1)
-        {
-            s++;
-            visited.emplace_back(x);
-            bfs(vec1, x, end_word, s, visited);
-        }
-    }
-    return;
-}
-
-int main() {
-    string start_word="hit", end_word="cog";
-    vector<string> list_words = {"hot", "dot", "dog", "lot", "log", "cog"};
-    //create graph
-    unordered_map <string, vector<string> > graph;
+    vector <string > neighbors;
     for (int i=0; i<list_words.size(); i++)
     {
-        for(int j=i+1; j<list_words.size(); j++)
+        if(list_words[i]!=current_node)
         {
-            
-            int ret = compare(list_words[i], list_words[j]);
-            if (ret==1)
+            if(compare(current_node, list_words[i])==1)
             {
-                graph[list_words[i]].push_back(list_words[j]);
-                graph[list_words[j]].push_back(list_words[i]);
+                neighbors.push_back(list_words[i]);
+            }
+            
+        }
+    } 
+    return neighbors;
+}
+
+int bfs(vector<string> list_words, string start_node, string end_node)
+{
+    if (start_node == end_node)
+    {
+        return 0;
+    }
+    vector <string > visited;
+    map <string, string > parents = {{start_node, "NA"}};
+    vector <string > list_nodes;
+    list_nodes.emplace_back(start_node);
+    string current_node;
+    vector <string > neighbors;
+    while (list_nodes.size() != 0)
+    {
+        current_node = list_nodes[0];
+        list_nodes.erase(list_nodes.begin());
+        neighbors = find_neighbors(current_node, list_words);
+
+        for (auto a : neighbors)
+        {
+
+            
+            if (find(visited.begin(), visited.end(), a) == visited.end())
+            {
+                parents[a] = current_node;
+                if (a == end_node)
+                {
+                    string current = a;
+                    int s = 0;
+                    while (parents[current]!=start_node)
+                    {
+                        s += 1;
+                        current = parents[current];
+                    }
+                    return s+1;
+                }
+                visited.emplace_back(a);
+                list_nodes.emplace_back(a);
             }
         }
     }
-    //print graph
-    for(auto x: graph)
-    {
-        cout << x.first << ": ";
-        for (auto y: graph[x.first])
-        {
-            cout << y << ", ";
-        }
-        cout << endl;
-    }
+    return -1;
+}
 
-    // int s = 1;
-    // vector <string> visited = {start_word};
-    // bfs(vec1, start_word, end_word, s, visited);
-    // cout << s << endl;
+int main() {
+    string start_node="hit", end_node="cog";
+    vector<string> list_words = {"hot", "dot", "dog", "lot", "log", "cog"};
+
+    int steps = bfs(list_words, start_node, end_node);
+    cout << steps << endl;
+
+   
 }
