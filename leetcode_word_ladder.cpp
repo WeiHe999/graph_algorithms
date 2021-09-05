@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <map>
+#include <unordered_map>
 #include <vector>
+#include <queue>
 using namespace std;
 
 int compare(string a, string b)
@@ -15,58 +16,45 @@ int compare(string a, string b)
     return 0;
 }
 
-vector <string > find_neighbors(string current_node, vector <string > list_words)
+vector <string > find_neighbors(string current_word, vector <string > list_words)
 {
     vector <string > neighbors;
-    for (int i=0; i<list_words.size(); i++)
+    for (int i = 0; i < list_words.size(); i++)
     {
-        if(list_words[i]!=current_node)
+        if (list_words[i] != current_word)
         {
-            if(compare(current_node, list_words[i])==1)
-            {
-                neighbors.push_back(list_words[i]);
-            }
-            
+            if (compare(current_word, list_words[i]) == 1) neighbors.push_back(list_words[i]);
         }
     } 
     return neighbors;
 }
 
-int bfs(vector<string> list_words, string start_node, string end_node)
+int bfs(vector <string> list_words, string start_word, string end_word, unordered_map <string, string > &parents)
 {
-    if (start_node == end_node)
+    if (start_word == end_word)
     {
         return 0;
     }
     vector <string > visited;
-    map <string, string > parents = {{start_node, "NA"}};
-    vector <string > list_nodes;
-    list_nodes.emplace_back(start_node);
-    string current_node;
-    vector <string > neighbors;
+    vector <string> list_nodes = {start_word};
+    string current_word;
+    vector <string> neighbors;
     while (list_nodes.size() != 0)
     {
-        current_node = list_nodes[0];
+        current_word = list_nodes[0];
         list_nodes.erase(list_nodes.begin());
-        neighbors = find_neighbors(current_node, list_words);
-
+        neighbors = find_neighbors(current_word, list_words);
         for (auto a : neighbors)
         {
-
-            
             if (find(visited.begin(), visited.end(), a) == visited.end())
             {
-                parents[a] = current_node;
-                if (a == end_node)
+                parents[a] = current_word;
+                if (a == end_word)
                 {
                     string current = a;
                     int s = 0;
-                    while (parents[current]!=start_node)
-                    {
-                        s += 1;
-                        current = parents[current];
-                    }
-                    return s+1;
+                    while (current != "-1") {s++; current = parents[current];}
+                    return s;
                 }
                 visited.emplace_back(a);
                 list_nodes.emplace_back(a);
@@ -76,12 +64,18 @@ int bfs(vector<string> list_words, string start_node, string end_node)
     return -1;
 }
 
-int main() {
-    string start_node="hit", end_node="cog";
-    vector<string> list_words = {"hot", "dot", "dog", "lot", "log", "cog"};
-
-    int steps = bfs(list_words, start_node, end_node);
+int main()
+{
+    vector <string> list_words = {"hot", "dot", "dog", "lot", "log", "cog"};
+    string start_word = "hit";
+    string end_word = "cog";
+    unordered_map <string, string > parents = {{start_word, "-1"}};
+    int steps = bfs(list_words, start_word, end_word, parents);
     cout << steps << endl;
-
-   
+    cout << "final path: ";
+    string current = end_word;
+    vector <string> vec1;
+    while (current != "-1") {vec1.insert(vec1.begin(), current); current = parents[current];}
+    for (auto a : vec1) cout << a << " ";
+    cout << endl;
 }
