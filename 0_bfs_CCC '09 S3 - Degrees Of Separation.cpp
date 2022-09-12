@@ -14,6 +14,11 @@ s
 20
 6
 q
+
+output:
+2
+3
+4
 */
 
 #include <bits/stdc++.h>
