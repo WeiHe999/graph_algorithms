@@ -1,3 +1,21 @@
+/*
+input:
+i
+20
+10
+i
+20
+9
+n
+20
+f
+20
+s
+20
+6
+q
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
