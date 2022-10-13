@@ -1,3 +1,5 @@
+//DMOPC '21 Contest 6 P3 - An Art Problem
+
 #include <bits/stdc++.h>
 using namespace std;
 
