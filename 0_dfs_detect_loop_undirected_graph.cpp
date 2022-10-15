@@ -25,6 +25,7 @@ vector <int> vec1;
 void dfs(int prev, int cur, 
 unordered_map <int, int> &parents, unordered_set <int> &visited, bool &flag)
 {
+   if(flag) return;
  
     visited.insert(cur);
     //cout << "visited: " << cur << endl;
