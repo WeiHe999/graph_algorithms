@@ -18,7 +18,7 @@ void topological_sort(unordered_map<int, unordered_set<int> > &graph, vector<int
     }
     while(!q1.empty())
     {
-        int cur = q1.top();
+        int cur = q1.top(); // if it is a queue, use q1.front()
         top_order.push_back(cur);
         q1.pop();
         cnt++;
