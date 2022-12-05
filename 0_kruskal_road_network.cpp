@@ -80,13 +80,8 @@ double kruskal(unordered_map <long long, unordered_map<long long, long long> > &
     {
         for (auto y: x.second)
         {
-            pair<long long, long long> tmp1 = {min(x.first, y.first), max(x.first, y.first)};
-            if (!visited.count(tmp1)) // cut bi-directional duplicated edges
-            {
-                vector<long long> tmp = {{-1*y.second, x.first, y.first}};
-                visited.insert(tmp1);
-                pq.push(tmp);
-            }
+            vector<long long> tmp = {{-1*y.second, x.first, y.first}};
+            pq.push(tmp);
         }
     }
     
