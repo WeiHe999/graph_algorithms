@@ -1,4 +1,4 @@
-// dmoj: Road Network
+// problem is from DMOJ: Road Network
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -44,7 +44,16 @@ double prim(unordered_map <long long, unordered_map<long long, long long> > &gra
     {
         tot_dist += sqrt(dist[i]);
     }
+    
+    // print the edges inn MST
+    // cout << "The edges in MST:" << endl;
+    // for (int i=1; i<=n; i++)
+    // {
+    //     if (parents[i] >=0) cout << parents[i] << "-->" << i << endl;
+    // }
+    
     return tot_dist;
+    
 }
 
 
