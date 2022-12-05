@@ -55,7 +55,7 @@ bool unify(int node1, int node2, unordered_map<int, int> &node_mapping, vector<i
     }
 }
 
-
+// Kruskal algorithm for bulding min-spannig tree for bi-directional weighted graph
 int kruskal(unordered_map<int, unordered_map<int, int> > &graph)
 {
     // number of nodes in the graph
