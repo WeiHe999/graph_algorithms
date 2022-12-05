@@ -53,19 +53,13 @@ bool unify(int node1, int node2, unordered_map<int, int> &node_mapping, vector<i
         comp_size[root2] = 0;
         return true;     
     }
-
 }
 
-int main()
+
+int kruskal(unordered_map<int, unordered_map<int, int> > &graph)
 {
-    cin.tie(0); cout.tie(0); cin.sync_with_stdio(0);
-    
-    // step-1: undirected graph
-    unordered_map<int, vector< pair<int, int> >> graph;//{start_node: {end_node, weight}}
-    graph[0] = {{1, 1}, {2, 6}};
-    graph[1] = {{2, 2}, {0, 1}};
-    graph[2] = {{3, 3}, {0, 6}, {1, 2}};
-    graph[3] = {{0, 5}, {2, 3}};
+    // number of nodes in the graph
+    int num_nodes = graph.size();
     
     // step-2: node_mapping
     unordered_map<int, int> node_mapping;
@@ -93,6 +87,7 @@ int main()
     
     // step-5: kruskal algorithm: union to build minimum spanning tree
     int tot_cost = 0;
+    int connected_nodes = 1;
     vector<pair<int, int> > keep_edges;
     while(!pq.empty())
     {
@@ -104,16 +99,33 @@ int main()
         if (flag) 
         {
             tot_cost += (-1*v1[0]);
+            connected_nodes++;
             keep_edges.push_back({v1[1], v1[2]});
         }
+        //break if all nodes are merged
+        if (connected_nodes==num_nodes) break;
     }
-    cout << "The total cost = " << tot_cost << endl;
     cout << "The edges in min-spanning tree are:" << endl;
     for (auto x: keep_edges)
     {
         cout << x.first << " --> " << x.second << endl;
     }
+    return tot_cost;
+}
+
+int main()
+{
+    cin.tie(0); cout.tie(0); cin.sync_with_stdio(0);
     
+    // step-1: undirected graph
+    //unordered_map<int, vector< pair<int, int> >> graph;//{start_node: {end_node, weight}}
+    unordered_map<int, unordered_map<int, int> > graph;//{start_node: {end_node, weight}}
+    graph[0] = {{1, 1}, {2, 6}};
+    graph[1] = {{2, 2}, {0, 1}};
+    graph[2] = {{3, 3}, {0, 6}, {1, 2}};
+    graph[3] = {{0, 5}, {2, 3}};
     
+    int tot_cost = kruskal(graph);
+    cout << "The total cost  for the min-spanning tree is: " << tot_cost << endl;
 
 }
