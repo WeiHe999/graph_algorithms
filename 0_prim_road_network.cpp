@@ -75,8 +75,12 @@ int main()
         for (long long y = x+1; y <= n; y++)
         {
             long long d = distance(m1[x].first, m1[x].second, m1[y].first, m1[y].second);
-            graph[x][y] = d;
-            graph[y][x] = d;
+            
+            // dela with duplicated path between two nodes by choosing the smaller-cost edge
+            if (graph[x].count(y)) graph[x][y] = min(graph[x][y], d);
+            else graph[x][y] = d;
+            if (graph[y].count(x)) graph[y][x] = min(graph[y][x], d);
+            else graph[y][x] = d;
         }
     }
     // set the cost for the existing edges to 0
