@@ -56,7 +56,7 @@ bool unify(int node1, int node2, unordered_map<int, int> &node_mapping, vector<i
 }
 
 // Kruskal algorithm for bulding min-spannig tree for bi-directional weighted graph
-int kruskal(unordered_map<int, unordered_map<int, int> > &graph)
+int kruskal(unordered_map<int, vector<pair<int, int> > > &graph)
 {
     // number of nodes in the graph
     int num_nodes = graph.size();
@@ -88,7 +88,7 @@ int kruskal(unordered_map<int, unordered_map<int, int> > &graph)
     // step-5: kruskal algorithm: union to build minimum spanning tree
     int tot_cost = 0;
     int connected_nodes = 1;
-    unordered_map<int, unordered_map<int, int> > mst_graph;
+    unordered_map<int, vector<pair<int, int> > > mst_graph;
     while(!pq.empty())
     {
         // the edge with min weight
@@ -100,8 +100,8 @@ int kruskal(unordered_map<int, unordered_map<int, int> > &graph)
         {
             tot_cost += (-1*v1[0]);
             connected_nodes++;
-            mst_graph[v1[1]][v1[2]] = -1*v1[0];
-            mst_graph[v1[2]][v1[1]] = -1*v1[0];
+            mst_graph[v1[1]].push_back({v1[2], -1*v1[0]});
+            mst_graph[v1[2]].push_back({v1[1],  -1*v1[0]});
         }
         //break if all nodes are merged
         if (connected_nodes==num_nodes) break;
@@ -120,7 +120,7 @@ int main()
     
     // step-1: undirected graph
     //unordered_map<int, vector< pair<int, int> >> graph;//{start_node: {end_node, weight}}
-    unordered_map<int, unordered_map<int, int> > graph;//{start_node: {end_node, weight}}
+    unordered_map<int, vector<pair<int, int> > > graph;//{start_node: {end_node, weight}}
     graph[0] = {{1, 1}, {2, 6}};
     graph[1] = {{2, 2}, {0, 1}};
     graph[2] = {{3, 3}, {0, 6}, {1, 2}};
