@@ -87,7 +87,7 @@ double kruskal(unordered_map <long long, unordered_map<long long, long long> > &
     
     // step-5: kruskal algorithm: union to build minimum spanning tree
     double tot_cost = 0;
-    vector<pair<long long, long long> > keep_edges;
+    unordered_map<int, unordered_map<int, int> > mst_graph;
     long long connected_nodes = 1;
     while(!pq.empty())
     {
@@ -99,7 +99,8 @@ double kruskal(unordered_map <long long, unordered_map<long long, long long> > &
         if (flag) 
         {
             tot_cost += sqrt(-1.0*v1[0]);
-            keep_edges.push_back({v1[1], v1[2]});
+            mst_graph[v1[1]][v1[2]] = -1*v1[0];
+            mst_graph[v1[2]][v1[1]] = -1*v1[0];
             connected_nodes++;
         }
         if (connected_nodes==n) break;
@@ -107,10 +108,10 @@ double kruskal(unordered_map <long long, unordered_map<long long, long long> > &
     
     // //print the tree
     // cout << "Edges in min-spanning-tree:" << endl;
-    // for (auto x: keep_edges)
-    // {
-    //     cout << x.first << " --> " << x.second << endl;
-    // }
+//     for (auto x: mst_graph)
+//     {
+//         for (auto y: x.second) cout << x.first << " --> " << y.first << ", weight= " << y.second << endl;
+//     }
     
     return tot_cost;
 }
