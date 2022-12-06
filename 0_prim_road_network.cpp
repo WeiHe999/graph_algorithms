@@ -30,7 +30,7 @@ double prim(unordered_map <long long, unordered_map<long long, long long> > &gra
         for (auto x: graph[min_n.second])
         {
             long long child_node = x.first;
-            if ((!vis[child_node]) & (graph[cur_node][child_node] < dist[child_node]))
+            if ((!vis[child_node]) && (graph[cur_node][child_node] < dist[child_node]))
             {
                 // update dist and parents
                 dist[child_node] = graph[cur_node][child_node];
