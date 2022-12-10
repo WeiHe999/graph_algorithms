@@ -178,6 +178,9 @@ vector <bool> &global_vis, vector <int> &dist, int cur_node, unordered_map <int,
         }
     }
 }
+
+int main()
+{
     unordered_map <int, vector <pair <int, int> > > graph;
     // global visited vector, dealing with graph with multiple components
     vector <bool> global_vis(n + 1, false);
@@ -189,6 +192,7 @@ vector <bool> &global_vis, vector <int> &dist, int cur_node, unordered_map <int,
     int max_node1 = start_node, max_dist1 = 0;
     unordered_map <int, int> par1={{start_node, -1}};
     dfs(graph, vis1, global_vis, dist1, start_node, par1, max_dist1, max_node1);
+    cout << "One diameter endpoint is: " << max_node1 << endl;
     
     // step-2: find the diameter
     vector <bool> vis2(n + 1, false);
@@ -215,3 +219,4 @@ vector <bool> &global_vis, vector <int> &dist, int cur_node, unordered_map <int,
     }
     cout << "The tree radius length is: " << rad << endl;
     cout << "The tree center is: " << center_node << endl; 
+}
