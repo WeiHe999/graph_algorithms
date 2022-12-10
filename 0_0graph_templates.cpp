@@ -305,3 +305,18 @@ int main()
     cout << "The tree radius length is: " << rad << endl;
     cout << "The tree center is: " << center_node << endl; 
 }
+
+/*
+tree travel properties in a tree of N nodes and N-1 edges:
+Tree property 1: start from node A, visit all nodes and return back to node A, the total travel distance is 2*number_edges = 2*(N-1), 
+
+Tree property 2:  start from node A, visit all nodes and finally stop at any node, what is the min total distance? 
+Solution: the min total travel distance = 2*(N-1) - max_distance_from_node_A (DFS to find it)
+
+Tree property 3:  you can start from any node, and visit all nodes, what is the min distance you need?
+Solution: start from an diameter endpoint, end at another diameter endpoint, the min total travel distance = 2*(N-1) - tree_diameter
+
+Tree diameter property 4: how to find the max distance from any node to another node in O(N) complexity?
+solution: 1) find both diameter endpoints, get dist1 and dist2 vectors, 2) loop through all nodes, for each node, 
+the max_dist_node_k = max(dist1[k], dist2[k]), find the max dist among all n nodes.
+*/
