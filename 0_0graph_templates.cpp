@@ -324,3 +324,26 @@ Tree property 5: you can start from any node and end at any node, find the min d
 Solution: 1) create a new graph cutting the unneccesary nodes (the nodes that will not lead to the desired nodes), 
 2) min_distance = 2*(num_edges_in_new_graph) - tree_diameter
 */
+
+// DFS to prune nodes from a undirected tree to get a new graph
+// desired_nodes contain the nodes that must visit
+// returned params: graph1 (new graph after cutting the unnecessary nodes)
+void dfs(int start, unordered_map<int, unordered_set<int> > &graph, unordered_map<int, unordered_set<int> > &graph1, 
+unordered_set<int> &desired_nodes, vector<bool> &visited, vector<bool> &keep)
+{
+    visited[start] = true;
+    if (desired_nodes.count(start)) keep[start]=true;
+    for (auto x: graph[start])
+    {
+        if (!visited[x])
+        {
+            dfs(x, graph, graph1, desired_nodes, visited, keep);
+            keep[start] = keep[start] || keep[x];
+            if (keep[x]) 
+            {
+                graph1[start].insert(x);
+                graph1[x].insert(start);
+            }
+        }
+    }    
+}
