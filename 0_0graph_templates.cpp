@@ -69,3 +69,39 @@ int bfs(vector <vector <char> > graph, pair <int, int> start_node, pair <int, in
     }
     return -1;
 }
+
+//multi-source BFS
+unordered_map <int, vector <int> > graph;
+// find the min-distance between a number of source nodes and a number of end nodes in an unweighted graph
+// it can be converted to multiple cases: 
+// 1) single-source-single-end BFS: start_nodes contains one node, end_nodes contains one node
+// 2) multi-source-single-end BFS: start_nodes contains multiple nodes, end_nodes contains one node 
+// 3) priority-multi-source-single-end BFS: source nodes are push into queue in a priority way
+int bfs(vector <int> start_nodes, unordered_set <int> end_nodes, int n)
+{
+    queue <int> q1;
+    vector <int> dist(n + 1, -1);
+    // if neccessary, sort start_nodes first for priority order
+    for (auto a : start_nodes)
+    {
+        q1.push(a);
+        dist[a] = 0;
+        if (end_nodes.count(a)) return 0;
+    }
+    while (!q1.empty())
+    {
+        int cur_node = q1.front();
+        q1.pop();
+        for (auto x : graph[cur_node])
+        {
+            if (dist[x] == -1)
+            {
+                dist[x] = dist[cur_node] + 1;
+                if (end_nodes.count(x)) return dist[x];
+                q1.push(x);
+            }
+        }
+    }
+    return -1;
+}
+
