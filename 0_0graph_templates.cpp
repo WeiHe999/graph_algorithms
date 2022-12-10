@@ -316,7 +316,11 @@ Solution: the min total travel distance = 2*(N-1) - max_distance_from_node_A (DF
 Tree property 3:  you can start from any node, and visit all nodes, what is the min distance you need?
 Solution: start from an diameter endpoint, end at another diameter endpoint, the min total travel distance = 2*(N-1) - tree_diameter
 
-Tree diameter property 4: how to find the max distance from any node to another node in O(N) complexity?
+Tree property 4: how to find the max distance from any node to another node in O(N) complexity?
 solution: 1) find both diameter endpoints, get dist1 and dist2 vectors, 2) loop through all nodes, for each node, 
 the max_dist_node_k = max(dist1[k], dist2[k]), find the max dist among all n nodes.
+
+Tree property 5: you can start from any node and end at any node, find the min distance to travel to visit a set of nodes in a tree?
+Solution: 1) create a new graph cutting the unneccesary nodes (the nodes that will not lead to the desired nodes), 
+2) min_distance = 2*(num_edges_in_new_graph) - tree_diameter
 */
