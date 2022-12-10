@@ -30,35 +30,40 @@ int bfs(unordered_map <int, unordered_set <int> > graph, int start_node, int end
     return -1;
 }
 
-
-// BFS on 2D grid
-// find the number of hops from start to end, if not reachable, return -1.
-int bfs(pair <int, int> start, pair <int, int> end)
+// BFS on 2D grid of char, 'O' is open space (you can go up, down, left, right), 'X' is wall (you can go into the cell)
+// 'C' is start position, 'W' is destination, cell is numbered from 1 to 50
+int bfs(vector <vector <char> > graph, pair <int, int> start_node, pair <int, int> end_node)
 {
-    int max_cell = 9;
-    if (start == end) return 0;
-    map <pair <int, int>, int> dist;
+    // cell is numbered from 1 to 50
+    int max_cell = 50;
+    // can not exceed 60 steps
+    int max_allowed_steps = 60;
+    
     queue <pair <int, int> > q1;
-    set <pair <int, int> > vis;
-    vis.insert(start);
-    dist[start] = 0;
-    q1.push(start);
+    vector <vector <int> > dist(max_cell+1, vector <int>(max_cell+1));
+    vector <vector <bool> > vis(max_cell+1, vector <bool>(max_cell+1));
+    q1.push(start_node);
+    vis[start_node.first][start_node.second] = true;
+    dist[start_node.first][start_node.second] = 0;
     while (!q1.empty())
     {
         pair <int, int> cur_node = q1.front();
         q1.pop();
-        vector <pair <int, int> > vec1;
-        int x = cur_node.first, y = cur_node.second;
-        vec1 = {{x + 1, y + 2}, {x + 2, y + 1}, {x + 2, y - 1}, {x + 1, y - 2},
-        {x - 1, y - 2}, {x - 2, y - 1}, {x - 2, y + 1}, {x - 1, y + 2}};
+        vector <pair <int, int> > vec1 = {{cur_node.first - 1, cur_node.second},
+        {cur_node.first + 1, cur_node.second}, {cur_node.first, cur_node.second - 1}, {cur_node.first, cur_node.second + 1}};
         for (auto a : vec1)
         {
-            if (a.first > 0 && a.first < max_cell && a.second > 0 && a.second < max_cell && !vis.count(a))
+            if (a.first >= 1 && a.first < graph.size() && a.second >= 1 && 
+            a.second < graph[0].size() && graph[a.first][a.second] != 'X' && !vis[a.first][a.second])
             {
-                vis.insert(a);
+                dist[a.first][a.second] = dist[cur_node.first][cur_node.second] + 1;
+                if (dist[a.first][a.second] >= max_allowed_steps) return -1;
+                if (a.first == end_node.first && a.second == end_node.second)
+                {
+                    return dist[a.first][a.second];
+                }
+                vis[a.first][a.second] = 1;
                 q1.push(a);
-                dist[a] = dist[cur_node] + 1;
-                if (a.first == end.first && a.second == end.second) return dist[a];
             }
         }
     }
