@@ -106,8 +106,22 @@ int bfs(vector <int> start_nodes, unordered_set <int> end_nodes, int n)
     return -1;
 }
 
-
-
+// *************** DFS ********************
+// dfs on unweighted graph
+vector <bool> vis(n + 1, false);
+vector<int> dist(n+1);
+void dfs(unordered_map <int, unordered_set <int> > &graph, int cur_node, vector <bool> &vis, vector<int> &dist)
+{
+    vis[cur_node] = true;
+    for (auto x : graph[cur_node])
+    {
+        if (!vis[x])
+        {
+            dist[x] = dist[cur_node] + 1;
+            dfs(graph, x, vis, cur);
+        }
+    }
+}
 
 // *************** Reachable maytrix by Floyd Warshall Algorithm ********************
 // reachable[m][n] provides th emin-distance from node-m to node-n
