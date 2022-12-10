@@ -1,4 +1,6 @@
+// ****************************************
 // *************** BFS ********************
+// ****************************************
 
 // basic BFS
 // find the distance from start_node to end_node in an unweighted graph, return -1 if not reachable
@@ -106,7 +108,10 @@ int bfs(vector <int> start_nodes, unordered_set <int> end_nodes, int n)
     return -1;
 }
 
+// ****************************************
 // *************** DFS ********************
+// ****************************************
+
 // dfs on an unweighted graph
 // initialize the two vectors as below:
 vector <bool> vis(n + 1, false);
@@ -209,6 +214,9 @@ int main()
 }
 
 
+// ****************************************
+// ***********Floyd Warshall **************
+// ****************************************
 
 // *************** Reachable maytrix by Floyd Warshall Algorithm ********************
 // reachable[m][n] provides th emin-distance from node-m to node-n
@@ -240,7 +248,9 @@ void floyd_warshall(unordered_map<int, unordered_map<int, int> > graph, vector <
     }
 }
 
-// *************** Tree ********************
+// ****************************************
+// ************* Tree *********************
+// ****************************************
 
 // #### tree diamater and radius ###
 void dfs(unordered_map <int, vector <pair <int, int> > > &graph, vector <bool> &vis,
@@ -306,6 +316,7 @@ int main()
     cout << "The tree center is: " << center_node << endl; 
 }
 
+// #### tree travel ###
 /*
 tree travel properties in a tree of N nodes and N-1 edges:
 Tree property 1: start from node A, visit all nodes and return back to node A, the total travel distance is 2*number_edges = 2*(N-1), 
@@ -325,6 +336,7 @@ Solution: 1) create a new graph cutting the unneccesary nodes (the nodes that wi
 2) min_distance = 2*(num_edges_in_new_graph) - tree_diameter
 */
 
+// ### Tree travel for a set of nodes
 // DFS to prune nodes from a undirected tree to get a new graph
 // desired_nodes contain the nodes that must visit
 // returned params: graph1 (new graph after cutting the unnecessary nodes)
