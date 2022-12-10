@@ -106,3 +106,35 @@ int bfs(vector <int> start_nodes, unordered_set <int> end_nodes, int n)
     return -1;
 }
 
+
+
+
+// *************** Reachable maytrix by Floyd Warshall Algorithm ********************
+// reachable[m][n] provides th emin-distance from node-m to node-n
+// for loop detection, if reachable[n][n]>0 and reachable[n][n]<100001, node-n is in a loop
+// used in weighted directed graph, for unweighted graph, set the weight for each edge to 1
+// define reachable matrix as below:
+int num_nodes = 100;
+int max_dist = 100000; // the max hops between any two nodes
+vector <vector <int> > reachable(num_nodes+1, vector <int>(num_nodes+1, max_dist+1));
+
+void floyd_warshall(unordered_map<int, unordered_map<int, int> > graph, vector <vector <int> > &reachable, int n)
+{
+    for (auto x: graph)
+    {
+        for (auto y: graph[x.first])
+        {
+            reachable[x.first][y.first] = y.second;
+        }
+    }  
+    for (int mid = 1; mid <= n; mid++)
+    {
+        for (int beg = 1; beg <= n; beg++)
+        {
+            for (int end = 1; end <= n; end++)
+            {
+                reachable[beg][end] = min(reachable[beg][end], reachable[beg][mid] + reachable[mid][end]);
+            }
+        }
+    }
+}
