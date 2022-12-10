@@ -77,6 +77,7 @@ unordered_map <int, vector <int> > graph;
 // 1) single-source-single-end BFS: start_nodes contains one node, end_nodes contains one node
 // 2) multi-source-single-end BFS: start_nodes contains multiple nodes, end_nodes contains one node 
 // 3) priority-multi-source-single-end BFS: source nodes are push into queue in a priority way
+// 4) no end-node: in such case, set end_nodes to be empty, put vector <int> dist into input argument
 int bfs(vector <int> start_nodes, unordered_set <int> end_nodes, int n)
 {
     queue <int> q1;
