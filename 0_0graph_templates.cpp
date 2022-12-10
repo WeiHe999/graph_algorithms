@@ -125,6 +125,57 @@ void dfs(unordered_map <int, unordered_set <int> > &graph, int cur_node, vector 
     }
 }
 
+// DFS to detect loop in undirected graph
+// returned params: loop_found: true or false; loop_nodes: the nodes in a loop
+void dfs(unordered_map <int, unordered_set <int> > &graph, vector <int> &loop_nodes, int prev, int cur, 
+unordered_map <int, int> &parents, unordered_set <int> &visited, bool &loop_found)
+{
+   if(loop_found) return;
+ 
+    visited.insert(cur);
+    //cout << "visited: " << cur << endl;
+    for (auto x : graph[cur])
+    {
+        if (visited.count(x) && x != prev && !loop_found)
+            {
+                int c = cur;
+                loop_nodes = {x};
+                while (c != x)
+                {
+                    loop_nodes.emplace_back(c);
+                    c = parents[c];
+                }
+                loop_nodes.emplace_back(x);
+                loop_found = true;
+            }
+        
+        if (!visited.count(x))
+        {
+            parents[x] = cur;
+            dfs(graph, loop_nodes, cur, x, parents, visited, loop_found);
+        }
+    }
+    
+}
+
+int main()
+{
+    unordered_map <int, unordered_set <int> > graph;
+    vector <int> loop_nodes;
+    unordered_map <int, int> parents;
+    unordered_set <int> visited;
+    int start_node = 1;
+    parents[start_node] = -1;
+    bool flag = false;
+    dfs(graph, loop_nodes, parents[start_node], start_node, parents, visited, flag);
+    reverse(loop_nodes.begin(), loop_nodes.end());
+}
+
+// DFS to detect loop in a directed graph
+
+
+
+
 // *************** Reachable maytrix by Floyd Warshall Algorithm ********************
 // reachable[m][n] provides th emin-distance from node-m to node-n
 // for loop detection, if reachable[n][n]>0 and reachable[n][n]<100001, node-n is in a loop
