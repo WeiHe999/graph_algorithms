@@ -1,5 +1,36 @@
 // *************** BFS ********************
 
+// basic BFS
+// find the distance from start_node to end_node in an unweighted graph, return -1 if not reachable
+int bfs(unordered_map <int, unordered_set <int> > graph, int start_node, int end_node)
+{
+    if (start_node == end_node) return 0;
+    queue <int> q1;
+    unordered_set <int> visited;
+    unordered_map <int, int> dist;
+    q1.push(start_node);
+    visited.insert(start_node);
+    dist[start_node]= 0;
+    while (!q1.empty())
+    {
+        int cur_node = q1.front();
+        q1.pop();
+        for (auto x : graph[cur_node])
+        {
+            if (!visited.count(x))
+            {
+                visited.insert(x);
+                dist[x] = dist[cur_node] + 1;
+                if (x == end_node) return dist[x];
+                q1.push(x);
+            }
+        }
+
+    }
+    return -1;
+}
+
+
 // BFS on 2D grid
 // find the number of hops from start to end, if not reachable, return -1.
 int bfs(pair <int, int> start, pair <int, int> end)
