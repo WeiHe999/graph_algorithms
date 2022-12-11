@@ -362,7 +362,7 @@ unordered_set<int> &desired_nodes, vector<bool> &visited, vector<bool> &keep)
 
 
 // ****************************************
-// ************* Tree *********************
+// ********* Topological Sort *************
 // ****************************************
 
 // topological sort on the undirected graph with n nodes
