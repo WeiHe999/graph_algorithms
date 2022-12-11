@@ -450,8 +450,94 @@ int prim(unordered_map <int, unordered_map<int, int> > &graph, int n)
 }
 
 
+// ****************************************
+// *** Min-Spanning-Tree: Kruskal *********
+// ***** Union Find ***********************
+// ****************************************
 
+// Function to find root for a node
+long long find_set(long long node, vector<long long> &parents)
+{
+    if (node!=parents[node]) parents[node] = find_set(parents[node], parents);
+    return parents[node];
+}
+    
+// Function to merge two nodes
+bool unify(long long node1, long long node2, vector<long long> &parents, vector<long long> &rank)
+{
+    long long root1 = find_set(node1, parents);
+    long long root2 = find_set(node2, parents);
+    if (root1 == root2)
+    {
+        return false; //loop        
+    }
+    else if (rank[root2] > rank[root1])
+    {
+        parents[root1] = root2;
+        return true;        
+    }
+    else
+    {
+        parents[root2] = root1;
+        if (rank[root2] == rank[root1]) rank[root1]++;
+        return true;     
+    }
 
+}
+
+// Kruskal's algorithm to get MST for undirectional graph
+// returned params: total cost to build the MST, and the new graph for MST (mst_graph)
+long long kruskal(unordered_map <long long, unordered_map<long long, long long> > &graph)
+{
+    //number of nodes
+    long long n = graph.size();
+    
+    // initialize parants, and rank
+    vector<long long> parents(n+1), rank(n+1);
+    for (long long i = 0; i <= n; i++) parents[i] = i;
+    
+    // push all edges into priority_queue
+    priority_queue<vector<long long> > pq;
+    //set<pair<long long, long long> > visited;
+    for (auto x: graph)
+    {
+        for (auto y: x.second)
+        {
+            vector<long long> tmp = {{-1*y.second, x.first, y.first}};
+            pq.push(tmp);
+        }
+    }
+    
+    // kruskal algorithm: union to build minimum spanning tree
+    long long tot_cost = 0;
+    unordered_map<long long, unordered_map<long long, lonhg long> > mst_graph;
+    long long connected_nodes = 1;
+    while(!pq.empty())
+    {
+        // the edge with min weight
+        vector<long long> v1 = pq.top();
+        pq.pop();
+        // union
+        bool flag = unify(v1[1], v1[2], parents, rank);
+        if (flag) 
+        {
+            tot_cost += -1*v1[0];
+            mst_graph[v1[1]][v1[2]] = -1*v1[0];
+            mst_graph[v1[2]][v1[1]] = -1*v1[0];
+            connected_nodes++;
+        }
+        if (connected_nodes==n) break;
+    } 
+    
+    // //print the tree
+    // cout << "Edges in min-spanning-tree:" << endl;
+//     for (auto x: mst_graph)
+//     {
+//         for (auto y: x.second) cout << x.first << " --> " << y.first << ", weight= " << y.second << endl;
+//     }
+    
+    return tot_cost;
+}
 
 
 // ****************************************
