@@ -394,3 +394,66 @@ bool top_sort(unordered_map <int, unordered_set <int> > &graph, int n)
     return true;
 }
 
+
+// ****************************************
+// *** Min-Spanning-Tree: PRIM ************
+// ****************************************
+
+// to find the min-total-cost for MST in a directed graph with n nodes
+// return the total cost for building the MST
+vector <bool> vis(n + 1, false);
+vector <int> dist(n + 1, INT_MAX);
+int prim(unordered_map <int, unordered_map <int, int> > &graph, vector <bool> &vis, vector <int> &dist)
+{
+    priority_queue <pair <int, int> > q1;
+    q1.push({0, 1}); //{weight, node_id}
+    dist[1] = 0;
+    while (!q1.empty())
+    {
+        pair <int, int> cur_node = q1.top();
+        q1.pop();
+        vis[cur_node.second] = true;
+        for (auto x : graph[cur_node.second])
+        {
+            if (!vis[x.first] && x.second < dist[x.first])
+            {
+                q1.push({-1 * x.second, x.first});
+                dist[x.first] = x.second;
+            }
+        }
+    }
+    int total_cost = 0;
+    for (int x = 1; x < dist.size(); x++)
+    {
+        total_cost += dist[x];
+    }
+    return total_cost;
+}
+
+
+
+
+
+// ****************************************
+// *** Binary search the answer ***********
+// ****************************************
+
+bool check(vector <int> vec1, int mid)
+{
+}
+int main()
+{
+    vector <int> vec1;
+    int ans = INT_MAX;
+    while (low <= high)
+    {
+        mid = (low + high) / 2;
+        if (check(vec1, mid)) // possible
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+        else low = mid + 1; // impossible
+    }
+    cout << ans << "\n";
+}
