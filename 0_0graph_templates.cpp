@@ -359,3 +359,38 @@ unordered_set<int> &desired_nodes, vector<bool> &visited, vector<bool> &keep)
         }
     }    
 }
+
+
+// ****************************************
+// ************* Tree *********************
+// ****************************************
+
+// topological sort on the undirected graph with n nodes
+// can use priority_queue<int> to get unique output
+bool top_sort(unordered_map <int, unordered_set <int> > &graph, int n)
+{
+    vector<int> indegree(n+1);
+    for (auto x: graph)
+    {
+        for (auto y: x.second)
+        {
+            indegree[y]++;
+        }
+    }
+    queue <int> q1;
+    //priority_queue<int> q1;
+    //priority_queue<int, vector<int>, greater<int> > q1; // min priority queue
+    for (int x = 1; x <= n; x++) if (indegree[x]==0) q1.push(x);
+    int counter = 0;
+    while (!q1.empty())
+    {
+        int cur_node = q1.front();
+        //int cur_node = q1.top(); 
+        q1.pop();
+        counter++;
+        for (auto x : graph[cur_node]) if (--indegree[x] == 0) q1.push(x);
+    }
+    if (counter != n) return false;
+    return true;
+}
+
