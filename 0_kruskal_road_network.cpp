@@ -1,5 +1,4 @@
-// DMOJ problem: road network
-// build min-spanning tree for bi-directional weighted graph using Kruskal algorithm
+// dmoj: Road Network
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -10,45 +9,30 @@ long long distance(long long x1, long long y1, long long x2, long long y2)
 }
 
 // Function to find root for a node
-long long find_root(long long node, unordered_map<long long, long long> &node_mapping, vector<long long> &node_ids)
+long long find_set(long long node, vector<long long> &parents)
 {
-    long long x = node_mapping[node];
-    vector<long long> list1;
-    while (x != node_ids[x])
-    {
-        list1.push_back(x);
-        x = node_ids[x];       
-    }
-    // path compression
-    for (auto y: list1) node_ids[y] = x;
-    return x;
+    if (node!=parents[node]) parents[node] = find_set(parents[node], parents);
+    return parents[node];
 }
     
 // Function to merge two nodes
-bool unify(long long node1, long long node2, unordered_map<long long, long long> &node_mapping, vector<long long> &node_ids, vector<long long> &comp_size)
+bool unify(long long node1, long long node2, vector<long long> &parents, vector<long long> &rank)
 {
-    // find the roots 
-    // if they are the same, return the root
-    // if not the same, find which one has larger size, merge small component to larger component
-    // update component size
-    long long root1 = find_root(node1, node_mapping, node_ids);
-    long long root2 = find_root(node2, node_mapping, node_ids);
+    long long root1 = find_set(node1, parents);
+    long long root2 = find_set(node2, parents);
     if (root1 == root2)
     {
         return false; //loop        
     }
-    else if (comp_size[root2] > comp_size[root1])
+    else if (rank[root2] > rank[root1])
     {
-        node_ids[root1] = root2;
-        comp_size[root2] += comp_size[root1];
-        comp_size[root1] = 0;
+        parents[root1] = root2;
         return true;        
     }
     else
     {
-        node_ids[root2] = root1;
-        comp_size[root1] += comp_size[root2];
-        comp_size[root2] = 0;
+        parents[root2] = root1;
+        if (rank[root2] == rank[root1]) rank[root1]++;
         return true;     
     }
 
@@ -60,22 +44,13 @@ double kruskal(unordered_map <long long, unordered_map<long long, long long> > &
     //number of nodes
     long long n = graph.size();
     
-    // step-2: node_mapping
-    unordered_map<long long, long long> node_mapping;
-    long long number_nodes = 0;
-    for (auto x: graph)
-    {
-        node_mapping[x.first] = number_nodes;
-        number_nodes++;
-    }
+    // init parants, and rank
+    vector<long long> parents(n+1), rank(n+1);
+    for (long long i = 0; i <= n; i++) parents[i] = i;
     
-    // step 3: init node_ids, and comp_sizes
-    vector<long long> node_ids(number_nodes), comp_size(number_nodes, 1);
-    for (long long i = 0; i<number_nodes; i++) node_ids[i] = i;
-    
-    // step-4: push all edges into priority_queue
+    // push all edges into priority_queue
     priority_queue<vector<long long> > pq;
-    set<pair<long long, long long> > visited;
+    //set<pair<long long, long long> > visited;
     for (auto x: graph)
     {
         for (auto y: x.second)
@@ -85,7 +60,7 @@ double kruskal(unordered_map <long long, unordered_map<long long, long long> > &
         }
     }
     
-    // step-5: kruskal algorithm: union to build minimum spanning tree
+    // kruskal algorithm: union to build minimum spanning tree
     double tot_cost = 0;
     unordered_map<int, unordered_map<int, int> > mst_graph;
     long long connected_nodes = 1;
@@ -95,7 +70,7 @@ double kruskal(unordered_map <long long, unordered_map<long long, long long> > &
         vector<long long> v1 = pq.top();
         pq.pop();
         // union
-        bool flag = unify(v1[1], v1[2], node_mapping, node_ids, comp_size);
+        bool flag = unify(v1[1], v1[2], parents, rank);
         if (flag) 
         {
             tot_cost += sqrt(-1.0*v1[0]);
