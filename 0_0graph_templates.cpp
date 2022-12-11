@@ -401,34 +401,54 @@ bool top_sort(unordered_map <int, unordered_set <int> > &graph, int n)
 
 // to find the min-total-cost for MST in a directed graph with n nodes
 // return the total cost for building the MST
-vector <bool> vis(n + 1, false);
-vector <int> dist(n + 1, INT_MAX);
-int prim(unordered_map <int, unordered_map <int, int> > &graph, vector <bool> &vis, vector <int> &dist)
+
+// node_id from 1 to n
+int prim(unordered_map <int, unordered_map<int, int> > &graph, int n)
 {
-    priority_queue <pair <int, int> > q1;
-    q1.push({0, 1}); //{weight, node_id}
+    // PRIM for MST
+    vector<int> dist(n+1, LLONG_MAX), parents(n+1, -1);
+    vector<bool> vis(n+1);
+    priority_queue<pair<int, int> > min_q; //min_queue={dist, node_id}
+    // push the first node
     dist[1] = 0;
-    while (!q1.empty())
+    min_q.push({0, 1}); //{dist, node_id}
+    while(!min_q.empty())
     {
-        pair <int, int> cur_node = q1.top();
-        q1.pop();
-        vis[cur_node.second] = true;
-        for (auto x : graph[cur_node.second])
+        pair<int, int> min_n = min_q.top();
+        int cur_node = min_n.second;
+        min_q.pop();
+        if (vis[cur_node]) continue;
+        vis[cur_node] = true;
+        for (auto x: graph[min_n.second])
         {
-            if (!vis[x.first] && x.second < dist[x.first])
+            int child_node = x.first;
+            if ((!vis[child_node]) && (graph[cur_node][child_node] < dist[child_node]))
             {
-                q1.push({-1 * x.second, x.first});
-                dist[x.first] = x.second;
+                // update dist and parents
+                dist[child_node] = graph[cur_node][child_node];
+                parents[child_node] = cur_node;
+                // push into queue
+                min_q.push({-1*graph[cur_node][child_node], child_node});
             }
         }
     }
-    int total_cost = 0;
-    for (int x = 1; x < dist.size(); x++)
+    int tot_dist = 0;
+    for (int i=1; i<=n; i++) 
     {
-        total_cost += dist[x];
+        tot_dist += dist[i];
     }
-    return total_cost;
+    
+    // print the edges inn MST
+    // cout << "The edges in MST:" << endl;
+    // for (int i=1; i<=n; i++)
+    // {
+    //     if (parents[i] >=0) cout << parents[i] << "-->" << i << endl;
+    // }
+    
+    return tot_dist;
+    
 }
+
 
 
 
