@@ -351,7 +351,7 @@ unordered_set<int> &desired_nodes, vector<bool> &visited, vector<bool> &keep)
         {
             dfs(x, graph, graph1, desired_nodes, visited, keep);
             keep[start] = keep[start] || keep[x];
-            if (keep[x]) 
+            if (keep[start] && keep[x]) 
             {
                 graph1[start].insert(x);
                 graph1[x].insert(start);
