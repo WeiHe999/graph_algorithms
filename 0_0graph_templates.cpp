@@ -207,10 +207,10 @@ int main()
     unordered_map<int, unordered_set<int> > graph = {{1, {2}}, {2, {3, 5}}, {3, {4, 5}}, {4, {2}}};
     vector<int> visited(10, 0);
     vector<int> dist(10, 0);
-    int loop_lenth = -1;
+    int loop_length = -1;
     bool found_loop = false;
     dfs(1, graph, found_loop, visited, dist, loop_lenth);
-    cout << loop_lenth << endl;   
+    cout << loop_length << endl;   
 }
 
 
