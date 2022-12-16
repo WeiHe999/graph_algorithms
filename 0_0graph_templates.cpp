@@ -367,7 +367,7 @@ unordered_set<int> &desired_nodes, vector<bool> &visited, vector<bool> &keep)
 
 // topological sort on the undirected graph with n nodes
 // can use priority_queue<int> to get unique output
-bool top_sort(unordered_map <int, unordered_set <int> > &graph, int n)
+bool top_sort(unordered_map <int, unordered_set <int> > &graph, int n, vector<int> &output1)
 {
     vector<int> indegree(n+1);
     for (auto x: graph)
@@ -387,6 +387,7 @@ bool top_sort(unordered_map <int, unordered_set <int> > &graph, int n)
         int cur_node = q1.front();
         //int cur_node = q1.top(); 
         q1.pop();
+        output1.emplace_back(cur_node);
         counter++;
         for (auto x : graph[cur_node]) if (--indegree[x] == 0) q1.push(x);
     }
@@ -403,7 +404,7 @@ bool top_sort(unordered_map <int, unordered_set <int> > &graph, int n)
 // return the total cost for building the MST
 
 // node_id from 1 to n
-int prim(unordered_map <int, unordered_map<int, int> > &graph, int n)
+int prim(unordered_map <int, unordered_map<int, int> > &graph, int n, unordered_map<int, int> &parents)
 {
     // PRIM for MST
     vector<int> dist(n+1, LLONG_MAX), parents(n+1, -1);
@@ -438,7 +439,7 @@ int prim(unordered_map <int, unordered_map<int, int> > &graph, int n)
         tot_dist += dist[i];
     }
     
-    // print the edges inn MST
+    // print the edges in MST
     // cout << "The edges in MST:" << endl;
     // for (int i=1; i<=n; i++)
     // {
@@ -544,7 +545,7 @@ long long kruskal(unordered_map <long long, unordered_map<long long, long long> 
 // *** Binary search the answer ***********
 // ****************************************
 
-bool check(vector <int> vec1, int mid)
+bool check(vector <int> &vec1, int mid)
 {
 }
 int main()
