@@ -209,7 +209,7 @@ int main()
     vector<int> dist(10, 0);
     int loop_length = -1;
     bool found_loop = false;
-    dfs(1, graph, found_loop, visited, dist, loop_lenth);
+    dfs(1, graph, found_loop, visited, dist, loop_length);
     cout << loop_length << endl;   
 }
 
