@@ -1,5 +1,7 @@
 /*
 dmoj: CCC '09 S4 - Shop and Ship
+use priority queue, time complexity O(Elog(V)), applicable to the case where the number of edges is not huge
+
 */
 
 #include <bits/stdc++.h>
