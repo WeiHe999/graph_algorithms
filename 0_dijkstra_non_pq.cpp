@@ -1,6 +1,6 @@
 /*
 dmoj: CCC '09 S4 - Shop and Ship
-not use priority queue, time complexity O(V**2), applicable to the vase where the number of nodes is small, while the number of edges is huge
+not use priority queue, time complexity O(V**2), applicable to the case where the number of nodes is small, while the number of edges is huge
 */
 
 #include <bits/stdc++.h>
