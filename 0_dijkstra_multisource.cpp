@@ -6,7 +6,7 @@ find the shortes one-to-one path from possible multiple sources to a common dest
 #include <bits/stdc++.h>
 using namespace std;
 
-void dijkstra(vector <pair <int, int> > vec1, unordered_map <int, vector<pair<int, int> > > &graph, vector <int> &dist, vector <false> &vis)
+void dijkstra(vector <pair <int, int> > vec1, unordered_map <int, vector<pair<int, int> > > &graph, vector <int> &dist, vector <bool> &vis)
 {
     priority_queue <pair <int, int>, vector <pair <int, int> >, greater <pair <int, int> > > q1;
     for (auto p: vec1)
@@ -45,7 +45,7 @@ int main()
     cin >> k;
     vector <pair <int, int> > vec1;
     vector <int> dist(n + 1, INT_MAX);
-    vector <false> vis(n + 1, false);
+    vector <bool> vis(n + 1, false);
     for (int x = 0; x < k; x++)
     {
         cin >> a >> b;
