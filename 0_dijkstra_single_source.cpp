@@ -7,7 +7,7 @@ use priority queue, time complexity O(Elog(V)), applicable to the case where the
 #include <bits/stdc++.h>
 using namespace std;
 
-void dijkstra(int start_node, unordered_map <int, vector<pair<int, int> > > &graph, vector <int> &dist)
+void dijkstra(int start_node, unordered_map <int, vector<pair<int, int> > > &graph, vector <int> &dist, vector <bool> &vis)
 {
     priority_queue <pair <int, int>, vector <pair <int, int> >, greater <pair <int, int> > > q1;
     q1.push({0, start_node});
@@ -15,6 +15,8 @@ void dijkstra(int start_node, unordered_map <int, vector<pair<int, int> > > &gra
     {
         pair <int, int> cur_node = q1.top();
         q1.pop();
+        if (vis[cur_node.second]) continue;
+        vis[cur_node.second] = true;
         for (auto x : graph[cur_node.second])
         {
             if (cur_node.first + x.second < dist[x.first])
@@ -47,8 +49,9 @@ int main()
     }
     cin >> d;
     vector <int> dist(n + 1, INT_MAX);
+    vector <bool> vis(n + 1, false);
     dist[d] = 0;
-    dijkstra(d, graph, dist);
+    dijkstra(d, graph, dist, vis);
     for (auto x : vec1) s = min(dist[x.first] + x.second, s);
     cout << s << "\n";
 }
