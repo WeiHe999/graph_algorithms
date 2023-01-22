@@ -564,3 +564,31 @@ int main()
     }
     cout << ans << "\n";
 }
+
+// ****************************************
+// *** Dijkstra algorithm ***********
+// ****************************************
+// initialize
+vector <int> dist(n + 1, INT_MAX);
+vector <bool> vis(n + 1, false);
+dist[d] = 0;
+void dijkstra(int start_node, unordered_map <int, vector<pair<int, int> > > &graph, vector <int> &dist, vector <bool> &vis)
+{
+    priority_queue <pair <int, int>, vector <pair <int, int> >, greater <pair <int, int> > > q1;
+    q1.push({0, start_node});
+    while (!q1.empty())
+    {
+        pair <int, int> cur_node = q1.top();
+        q1.pop();
+        if (vis[cur_node.second]) continue;
+        vis[cur_node.second] = true;
+        for (auto x : graph[cur_node.second])
+        {
+            if (cur_node.first + x.second < dist[x.first])
+            {
+                dist[x.first] = cur_node.first + x.second;
+                q1.push({dist[x.first], x.first});
+            }
+        }
+    }
+}
