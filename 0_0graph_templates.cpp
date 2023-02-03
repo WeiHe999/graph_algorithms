@@ -592,3 +592,38 @@ void dijkstra(int start_node, unordered_map <int, vector<pair<int, int> > > &gra
         }
     }
 }
+
+
+// ****************************************
+// *** SPFA algorithm ***********
+// ****************************************
+// The Shortest Path Faster Algorithm (SPFA) is an improvement of the Bellman–Ford algorithm 
+// which can deal with negative edge-cost, a node may be put into the queue multiple times
+const int MM = 1e9;
+vector <int> dist(n + 1, MM);
+vector <bool> inq(n + 1, false);
+void spfa(int start_node, unordered_map <int, vector <pair <int, int> > > &graph, vector <int> &dist, vector <bool> &inq)
+{
+    dist[start_node] = 0;
+    queue <int> q1;
+    q1.push(start_node);
+    inq[start_node] = true; // inq is the vector to check if a node is inside the queue
+    while (!q1.empty())
+    {
+        int cur_node = q1.front();
+        q1.pop();
+        inq[cur_node] = false;
+        for (auto x : graph[cur_node])
+        {
+            if (dist[cur_node] + x.second < dist[x.first])
+            {
+                dist[x.first] = dist[cur_node] + x.second;
+                if (!inq[x.first])
+                {
+                    q1.push(x.first);
+                    inq[x.first] = true;
+                }
+            }
+        }
+    }
+}
