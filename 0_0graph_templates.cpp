@@ -659,62 +659,67 @@ root = 6
 // ****************************************
 // *** Tarjan algorithm ***********
 // ****************************************
+/*
+This algorithm is used to find the strongly connected components from a directed graph.
+In a strongly connected component, each node can reach any other node in the same component. In other words,
+for any two nodes a and b in the same component, a can reach b and b can reach a.
+input:
+6 8 // num_nodes = 6, num_edges = 8
+1 2 // edge 1
+1 3
+2 4
+4 1
+3 5
+5 6
+4 6
+3 4
+
+output: 3 components with roots 1, 5, 6, respectively:
+1: 3 4 2 1 
+5: 5 
+6: 6 
+
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
 const int MM = 10;
-unordered_map<int, vector<int> > graph, components;
-vector<int> dfn(MM), low(MM), in_stack(MM);
-stack<int> st;
+
+unordered_map <int, vector <int> > graph;
+unordered_map <int, vector <int> > components;
+vector <int> dfn(MM + 1), low(MM + 1), in_stack(MM + 1);
+stack <int> s1;
 int ind;
 
-void tarjan(int cur_node)
+void tarjan(int cur)
 {
     ind++;
-    dfn[cur_node] = ind;
-    low[cur_node] = ind;
-
-    // push in stack
-    st.push(cur_node);
-    in_stack[cur_node] = 1;
-    for (auto x: graph[cur_node])
+    dfn[cur] = low[cur] = ind;
+    s1.push(cur);
+    in_stack[cur] = 1;
+    for (auto x : graph[cur])
     {
-        // if the child has not been visited
-        if (dfn[x]==0)
+        if (dfn[x] == 0)
         {
             tarjan(x);
-            low[cur_node] = min(low[cur_node], low[x]);
+            low[cur] = min(low[cur], low[x]);
         }
-        else
-        {
-            // if the child has been visited, but it is in stack
-            if (in_stack[x])
-            {
-                low[cur_node] = min(low[cur_node], low[x]);
-            }
-        }
+        else if (in_stack[x]) low[cur] = min(low[cur], dfn[x]);
     }
-    
-    // if the current node is a root
-    if (dfn[cur_node]==low[cur_node])
+    if (dfn[cur] == low[cur])
     {
-        int w = 0;
-        vector<int> v1; // vector to store the nodes in a component
-        // pop stack until cur_node
-        while(!st.empty() && st.top()!=cur_node)
+        vector <int> vec1;
+        while (s1.top() != cur)
         {
-            w = st.top();
-            v1.push_back(w);
-            in_stack[w] = 0;
-            st.pop();
+            vec1.emplace_back(s1.top());
+            in_stack[s1.top()] = 0;
+            s1.pop();
         }
-        
-        // continue to pop the current node (root)
-        w = st.top();
-        v1.push_back(w);
-        in_stack[w] = 0;
-        st.pop();
-        components[w] = v1;        
-        
+        vec1.emplace_back(s1.top());
+        components[s1.top()] = vec1;
+        in_stack[s1.top()] = 0;
+        s1.pop();
     }
-
 }
 
 int main() {
@@ -725,22 +730,15 @@ int main() {
         cin >> a >> b;
         graph[a].push_back(b);
     }
-    
-    
-    int start_node = 1;
-    ind = 0; // global index is set to 0
-    tarjan(start_node);
-    
-    // print the result
-    for (auto x: components)
+    ind = 0;
+    tarjan(1);
+    for (auto x : components)
     {
-        cout << "root = " << x.first << endl;
-        for (auto y: x.second)
-        {
-            cout << y << " ";
-        }
-        cout << endl;
+        cout << x.first << ": ";
+        for (auto y : x.second) cout << y << " ";
+        cout << "\n";
     }
+}
     
     
 }
