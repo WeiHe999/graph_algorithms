@@ -1,3 +1,28 @@
+/*
+This algorithm is used to find the strongly connected components from a directed graph.
+In a strongly connected component, each node can reach any other node in the same component. In other words,
+for any two nodes a and b in the same component, a can reach b and b can reach a.
+input:
+6 8 // num_nodes = 6, num_edges = 8
+1 2 // edge 1
+1 3
+2 4
+4 1
+3 5
+5 6
+4 6
+3 4
+
+output: 3 components with roots 1, 5, 6, respectively:
+root = 1
+3 4 2 1 
+root = 5
+5 
+root = 6
+6 
+
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
