@@ -699,14 +699,14 @@ void tarjan(int cur)
     in_stack[cur] = 1;
     for (auto x : graph[cur])
     {
-        if (dfn[x] == 0)
+        if (dfn[x] == 0) // not been visited
         {
             tarjan(x);
             low[cur] = min(low[cur], low[x]);
         }
-        else if (in_stack[x]) low[cur] = min(low[cur], dfn[x]);
+        else if (in_stack[x]) low[cur] = min(low[cur], dfn[x]); // ancestor
     }
-    if (dfn[cur] == low[cur])
+    if (dfn[cur] == low[cur]) //root
     {
         vector <int> vec1;
         while (s1.top() != cur)
@@ -715,6 +715,7 @@ void tarjan(int cur)
             in_stack[s1.top()] = 0;
             s1.pop();
         }
+        // pop the last node (root)
         vec1.emplace_back(s1.top());
         components[s1.top()] = vec1;
         in_stack[s1.top()] = 0;
@@ -730,7 +731,7 @@ int main() {
         cin >> a >> b;
         graph[a].push_back(b);
     }
-    ind = 0;
+    ind = 0; // reset global index
     tarjan(1);
     for (auto x : components)
     {
