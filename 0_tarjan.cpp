@@ -65,7 +65,7 @@ void tarjan(int cur_node)
         int w = 0;
         vector<int> v1; // vector to store the nodes in a component
         // pop stack until cur_node
-        while(st.top()!=cur_node)
+        while(!st.empty() && st.top()!=cur_node)
         {
             w = st.top();
             v1.push_back(w);
