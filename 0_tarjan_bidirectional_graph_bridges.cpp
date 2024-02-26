@@ -1,3 +1,29 @@
+/*
+detect bridges in bidirectional graph using tarjan algorithm:
+# How to get the strongly-connected-componenets using Tarjan in bidirectioanl graph?
+The method is the same as that in directional graph, except that we need to keep track of the previous node, 
+if the chiild of the current node is a previous node, just continue
+
+# How to detect the bridges?
+for a bidirectional edge from u to v, if dfn[u] > dfn[v] and low[u] > low[n], the edge from u to v is an bridge.
+
+input:
+5 5
+1 2
+2 3
+2 4
+3 4
+4 5
+
+output:
+1: 1 
+2: 4 3 2 
+5: 5 
+Bridges: 
+1, 2
+4, 5
+    */
+
 #include <bits/stdc++.h>
 using namespace std;
 const int MM = 10;
@@ -65,7 +91,7 @@ int main() {
         {
             // from node-i to node-x
             if ((dfn[x] > dfn[i]) && (low[x] > low[i])) bridges.insert({min(i, x), max(i, x)});
-            if ((dfn[i] > dfn[x]) && (low[i] > low[x])) bridges.insert({min(i, x), max(i, x)});
+            //if ((dfn[i] > dfn[x]) && (low[i] > low[x])) bridges.insert({min(i, x), max(i, x)});
         }
 
     }
