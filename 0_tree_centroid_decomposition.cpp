@@ -4,7 +4,7 @@ idea: recursive to find tree centroid, until all nodes have been used as a centr
 for each centrois, find the number of paths cross the centroid (including start from the centroid or end at centroid) by using a unordered_map
 
 sample input:
-5 1 // number of nodes = 5, fix_length = 1
+5 2 // number of nodes = 5, fix_length = 2
 1 2
 1 3
 3 4
@@ -82,7 +82,8 @@ void dfs4(int node) {
 	// find the number of path with fix-length
 	m1 = {};
 	m1[0] = 1;
-	for (int i=1; i<=n; i++) dist[i] = 0;
+	dist[centroid] = 0;
+	//for (int i=1; i<=n; i++) dist[i] = 0;
 	dfs3(centroid, -1);
 	for (int child : graph[centroid]) {
 		if (is_removed[child]) continue;
